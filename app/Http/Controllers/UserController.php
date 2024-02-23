@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Service\UserIndexService;
+use App\Service\UsersListService;
 use App\Service\UserShowService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -23,11 +23,11 @@ class UserController extends Controller
 
     /**
      * @param IndexRequest $request
-     * @param UserIndexService $service
+     * @param UsersListService $service
      * @return JsonResponse
      */
-    public function index(IndexRequest $request, UserIndexService $service) :JsonResponse
+    public function usersList(IndexRequest $request, UsersListService $service) :JsonResponse
     {
-        return $service->index($request);
+        return $service->usersList($request);
     }
 }

@@ -11,7 +11,7 @@ class PositionService
     /**
      * @return JsonResponse
      */
-    public function index() :JsonResponse
+    public function positionsList() :JsonResponse
     {
         try {
             $position = Position::all('id', 'name');

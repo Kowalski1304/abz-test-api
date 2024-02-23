@@ -11,8 +11,8 @@ class PositionController extends Controller
      * @param PositionService $service
      * @return JsonResponse
      */
-    public function index(PositionService $service) :JsonResponse
+    public function positionsList(PositionService $service) :JsonResponse
     {
-        return $service->index();
+        return $service->positionsList();
     }
 }

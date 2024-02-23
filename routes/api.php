@@ -19,13 +19,13 @@ use App\Http\Controllers\PositionController;
 
 Route::group(['prefix' => 'v1'], function () {
 
-    Route::get('/token', [TokenController::class, 'index']);
+    Route::get('/token', [TokenController::class, 'tokenGenerate']);
 
-    Route::get('/users', [UserController::class, 'index']);
+    Route::get('/users', [UserController::class, 'usersList']);
     Route::post('/users', [RegisterController::class, 'store']);
 
     Route::get('/users/{user_id}', [UserController::class, 'show']);
 
-    Route::get('/positions', [PositionController::class, 'index']);
+    Route::get('/positions', [PositionController::class, 'positionsList']);
 
 });

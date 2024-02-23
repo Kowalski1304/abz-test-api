@@ -39,8 +39,7 @@ class RegisterUserService
         try {
             $photo = $this->coverAndOptimizeImages($request->file('photo'));
 
-            $user = User::create($this->dto
-                ->prepareUsersData($request, $photo));
+            $user = User::create($this->dto->prepareUsersData($request, $photo));
 
             Auth::login($user);
 

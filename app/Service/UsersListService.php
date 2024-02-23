@@ -3,23 +3,23 @@
 namespace App\Service;
 
 use App\Models\User;
-use App\Service\DTO\UserIndexDTO;
+use App\Service\DTO\UsersListDTO;
 use Illuminate\Http\JsonResponse;
 
-class UserIndexService
+class UsersListService
 {
     protected $dto;
 
     public function __construct()
     {
-        $this->dto = resolve(UserIndexDTO::class);
+        $this->dto = resolve(UsersListDTO::class);
     }
 
     /**
      * @param $request
      * @return JsonResponse
      */
-    public function index($request) :JsonResponse
+    public function usersList($request): JsonResponse
     {
         $query = User::orderBy('created_at');
 
@@ -27,10 +27,14 @@ class UserIndexService
             $users = $query->offset($request->offset)
                 ->limit($request->count)
                 ->get();
+
+            $data = $this->dto->prepareOffsetPagesData($request);
         }
 
         if ($request->offset == null) {
             $users = $query->paginate($request->count, ['*'], 'page', $request->page);
+
+            $data = $this->dto->preparePagesData($request, $users);
 
             if ($users->lastPage() < $request->page) {
                 return response()->json([
@@ -38,28 +42,14 @@ class UserIndexService
                     'message' => 'Page not found',
                 ], 404);
             }
-
-            $data['page'] = intval($request->page);
-            $data['lastPage'] = $users->lastPage();
-            $data['next_url'] = $users->nextPageUrl();
-            $data['prev_url'] = $users->previousPageUrl();
         }
 
-        $users_transform = $users->map(function ($user) {
+        $usersPaginate = $users->map(function ($user) {
             return $this->dto->prepareUsersData($user);
         });
 
         return response()->json([
-            'success' => true,
-            'page' => $data['page'] ?? null,
-            'total_pages' => $data['lastPage'] ?? null,
-            'total_users' => User::all()->count(),
-            'count' => $request->count,
-            'links' => [
-                'next_url' => $data['next_url'] ?? null,
-                'prev_url' => $data['prev_url'] ?? null,
-            ],
-            'users' => $users_transform,
+            $this->dto->prepareResponseData($data, $usersPaginate)
         ], 200);
     }
 }

@@ -11,8 +11,8 @@ class TokenController extends Controller
      * @param TokenService $service
      * @return JsonResponse
      */
-    public function index(TokenService $service) :JsonResponse
+    public function tokenGenerate(TokenService $service) :JsonResponse
     {
-        return $service->index();
+        return $service->tokenGenerate();
     }
 }

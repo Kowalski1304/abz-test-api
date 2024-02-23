@@ -11,7 +11,7 @@ class TokenService
     /**
      * @return JsonResponse
      */
-    public function index() :JsonResponse
+    public function tokenGenerate() :JsonResponse
     {
         $token = Str::random(344);
 
